@@ -68,9 +68,10 @@ def main(stds, jisho):
 	curses.init_pair(4,10,curses.COLOR_RED);
 	curses.init_pair(5,10,234);
 	curses.init_pair(6,10,-1);
+	curses.init_pair(7,233,3); #current tag
 	
-	curses.init_pair(20,-1,23); #35
-	curses.init_pair(21,10,23);
+	curses.init_pair(20,-1,23); #35 #tagged entry
+	curses.init_pair(21,10,23); #highlight query in tagged entry
 
 	for i in range(8,16):
 		curses.init_pair(i,i,-1);
@@ -80,7 +81,6 @@ def main(stds, jisho):
 	stds.keypad(True);
 
 	layout = Layout(stds,jisho);
-	tagsel = jisho.tagdef;
 
 	layout.set(layout.QUERY);
 	focus = stds;
@@ -105,11 +105,11 @@ def main(stds, jisho):
 				if c == 10:
 					query = layout.sbox.gather();
 					if len(query) > 5 and query[0:5] == ":tag ":
-						tagsel = query[5:];
+						layout.tbox.tagsel = query[5:];
 					focus = stds;
 				elif c in (10,27):
 					focus = stds;
-				elif layout.sbox.input(c):# and query[0] != ':':
+				elif layout.sbox.input(c):
 					query = layout.sbox.gather();
 					m = difflib.get_close_matches(query,
 						[x for x in jisho.rindex \
@@ -137,13 +137,13 @@ def main(stds, jisho):
 				entry = layout.rbox.gather();
 				if entry is not None:
 					try:
-						td = jisho.tagdict[tagsel];
+						td = jisho.tagdict[layout.tbox.tagsel];
 						try:
 							td.remove(entry["ent_seq"]);
 						except ValueError:
 							td.append(entry["ent_seq"]);
 					except KeyError:
-						jisho.tagdict[tagsel] = [entry["ent_seq"]];
+						jisho.tagdict[layout.tbox.tagsel] = [entry["ent_seq"]];
 				if focus is stds:
 					layout.rbox.render();
 
@@ -199,7 +199,7 @@ def main(stds, jisho):
 			else: #focus on stds
 				if c == ord('E'):
 					results = [];
-					tg = jisho.tagdict.get(tagsel);
+					tg = jisho.tagdict.get(layout.tbox.tagsel);
 					if tg is not None:
 						for te in tg:
 							for de in jisho.jmdict:
@@ -212,7 +212,7 @@ def main(stds, jisho):
 				elif c == ord('e'):
 					focus = layout.tbox.win;
 
-					layout.tbox.set(0,tagsel);
+					layout.tbox.set();
 					layout.set(layout.TAGBR);
 
 				elif c == ord('r'): #flashcards from the currently visible list

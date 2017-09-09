@@ -337,12 +337,13 @@ class TagBrowser(UIComponentBase):
 		super(TagBrowser,self).__init__(win);
 
 		self.jisho = jisho;
-		self.sel = None;
+		self.tagsel = jisho.tagdef;
+		self.sel = 0;
 	
-	def set(self, sel, tagsel):
+	def set(self, sel = None):
 		self.taglist = list(self.jisho.tagdict);
-		self.sel = sel;
-		self.tagsel = tagsel;
+		if sel is not None:
+			self.sel = sel;
 	
 	def render(self):
 		self.clear();
@@ -350,7 +351,7 @@ class TagBrowser(UIComponentBase):
 			(h,w) = self.win.getmaxyx();
 
 			for i,te in enumerate(self.taglist):
-				c = [1,2][self.sel != i];
+				c = [1,[2,7][te == self.tagsel]][self.sel != i];
 				self.win.addstr(te+" ["+str(len(self.jisho.tagdict[te]))+"]",curses.color_pair(c));
 				if te == self.tagsel:
 					self.win.addstr(" [current tag]",curses.color_pair(c));
@@ -379,9 +380,10 @@ class TagBrowser(UIComponentBase):
 		elif ch == ord('x'):
 			tt = self.gather();
 			if tt != self.jisho.tagdef:
+				if tt == self.tagsel:
+					self.tagsel = self.jisho.tagdef;
 				self.jisho.tagdict.pop(tt,None);
-
-				self.set(self.sel if self.sel < len(self.jisho.tagdict) else max(self.sel-1,0),self.tagsel);
+				self.set(self.sel if self.sel < len(self.jisho.tagdict) else max(self.sel-1,0));
 		elif ch == ord('y'):
 			self.tagsel = self.gather();
 		elif ch == ord('p'):
@@ -394,7 +396,9 @@ class TagBrowser(UIComponentBase):
 							tg.append(ts);
 				else: self.jisho.tagdict[self.tagsel] = list(self.jisho.tagdict[tt]);
 
-				self.set(self.sel,self.tagsel);
+				self.set(self.sel);
+
+		return self.tagsel;
 	
 	def gather(self):
 		return self.taglist[self.sel];
