@@ -1,0 +1,90 @@
+.TH JMDCURSES 1
+.SH NAME
+JMdcurses \- A console Japanese-English dictionary
+.SH SYNOPSIS
+.B jmdcurses
+[\fB-j\fR \fIFILE\fR]
+[\fB--jmdict\fR=FILE\fR]
+[\fB-k\fR \fIFILE\fR]
+[\fB--kjdict\fR=FILE\fR]
+[\fB-c\fR \fIFILE\fR]
+[\fB--cache\fR=FILE\fR]
+[\fB-r\fR \fIFILE\fR]
+[\fB--tagfile\fR=FILE\fR]
+[\fB-h\fR]
+[\fB--help\fR]
+
+.SH DESCRIPTION
+JMdcurses is a console Japanese-English dictionary with typeahead queries and custom study lists (including flashcards). JMdcurses is written in Python, and features a curses interface and VI-like key bindings. For the words and translations JMdcurses uses the JMDict/EDICT and KANJIDIC2 dictionaries, property of the Electronic Dictionary Research and Development Group.
+
+.SH OPTIONS
+.TP
+.IP "\fB-j\fR \fIFILE\fR, \fB--jmdict\fR=\fIFILE\fR"
+Location of the JMdict_e xml.gz [default: ./JMdict_e.gz]
+.TP
+.IP "\fB-k\fR \fIFILE\fR, \fB--kjdict\fR=\fIFILE\fR"
+Location of the KANJIDIC2 xml.gz [default: ./kanjidic2.xml.gz]
+.TP
+.IP "\fB-c\fR \fIFILE\fR, \fB--cache\fR=\fIFILE\fR"
+Location of the index cache [default: /tmp/jmdcurses.bin]
+.TP
+.IP "\fB-r\fR \fIFILE\fR, \fB--tagfile\fR=\fIFILE\fR"
+Location of the tag file [default: ./jmdcurses.tags.bin]
+.TP
+.IP "\fB-h\fR, \fB--help\fR"
+Show help screen and exit
+
+.SH KEY BINDINGS
+.SS GENERAL
+.TP
+.BR j
+Move down in the list / Next item
+.TP
+.BR k
+Move up in the list / Previous item
+.TP
+.BR h
+Return to search mode
+.TP
+.BR l
+View dictionary entry / Reveal readings and translations when in flashcard mode / Show tag list contents (tag browser)
+.TP
+.BR q
+Quit jmdcurses
+
+.SS SEARCH MODE and ENTRY VIEW
+.TP
+.BR "Space, t"
+Tag the dictionary entry, ie. add it to the list of the currently set tag
+.TP
+.BR r
+Enter flashcard mode for the currently visible word list. The word order is randomized and displayed one item at a time. Use \fBj, k\fR to navigate, and \fBl\fR to show the hidden content.
+.TP
+.BR i
+Enter insert mode to type queries. Use \fB^C\fR, \fBEscape\fR or \fBEnter\fR to return. Start the query with ":" to type a command (see below).
+.TP
+.BR e
+Open the tag (word list) browser
+.TP
+.BR E
+Show only words with the currently set tag
+
+.SS TAG BROWSER
+.TP
+.BR y
+Point the tag to this list
+.TP
+.BR p
+Copy (and append) the selected list to the list of the currently set tag. If there is no list associated with the current tag, a new one will be created.
+.TP
+.BR x
+Delete the selected list.
+.TP
+.BR i
+Return to search mode and move to insert.
+
+.SH COMMANDS
+A command is entered by starting the query with ":" and finishing with \fBEnter\fR.
+.IP "tag [string]"
+Set the current tag to [string]
+
