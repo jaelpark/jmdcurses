@@ -15,7 +15,9 @@ JMdcurses \- A console Japanese-English dictionary
 [\fB--help\fR]
 
 .SH DESCRIPTION
-JMdcurses is a console Japanese-English dictionary with typeahead queries and custom study lists (including flashcards). JMdcurses is written in Python, and features a curses interface and VI-like key bindings. For the words and translations JMdcurses uses the JMDict/EDICT and KANJIDIC2 dictionaries, property of the Electronic Dictionary Research and Development Group.
+JMdcurses is a console Japanese-English dictionary with typeahead bidirectional queries and custom study lists (including flashcards). JMdcurses is written in Python, and features a curses interface and VI-like key bindings. For the words and translations JMdcurses uses the JMDict/EDICT and KANJIDIC2 dictionaries, property of the Electronic Dictionary Research and Development Group.
+
+Up to date dictionary files must be separately downloaded. Two files are required, the Japanese-English dictionary JMdict_e.gz and the kanji dictionary kanjidic2.xml.gz. By default JMDcurses looks for these files in the working directory. The dictionaries are indexed and cached to a configurable location. See below how to alter the search paths. Currently no configuration files are used or created, so the settings must be explicitly provided as command line options.
 
 .SH OPTIONS
 .TP
@@ -26,10 +28,10 @@ Location of the JMdict_e xml.gz [default: ./JMdict_e.gz]
 Location of the KANJIDIC2 xml.gz [default: ./kanjidic2.xml.gz]
 .TP
 .IP "\fB-c\fR \fIFILE\fR, \fB--cache\fR=\fIFILE\fR"
-Location of the index cache [default: /tmp/jmdcurses.bin]
+Location of the index cache [default: /tmp/jmdcurses.bin]. The file is automatically created.
 .TP
 .IP "\fB-r\fR \fIFILE\fR, \fB--tagfile\fR=\fIFILE\fR"
-Location of the tag file [default: ./jmdcurses.tags.bin]
+Location of the tag file [default: ./jmdcurses.tags.bin]. The file is automatically created.
 .TP
 .IP "\fB-h\fR, \fB--help\fR"
 Show help screen and exit
