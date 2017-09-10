@@ -109,7 +109,6 @@ class Dictionary:
 			self.tagdict = {};
 			self.tagdict[self.tagdef] = [];
 
-	
 	def SaveTags(self):
 		if len(self.tagdict) > 1 or len(self.tagdict[self.tagdef]) > 0:
 			with open(self.tagfile,"wb") as f:

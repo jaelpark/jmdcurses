@@ -147,6 +147,13 @@ def main(stds, jisho):
 						jisho.tagdict[layout.tbox.tagsel] = [entry["ent_seq"]];
 				if focus is stds:
 					layout.rbox.render();
+			
+			elif c == ord('T'):
+				entry = layout.rbox.gather();
+				if entry is not None:
+					jisho.tagdict[jisho.tagdef].append(entry["ent_seq"]);
+				if focus is stds:
+					layout.rbox.render();
 
 			elif focus is layout.ebox.win:
 				if c in (ord('h'),curses.KEY_LEFT,27):
