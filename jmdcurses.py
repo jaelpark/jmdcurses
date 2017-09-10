@@ -91,13 +91,14 @@ def main(stds, jisho):
 			if c == curses.KEY_RESIZE:
 				(h,w) = stds.getmaxyx();
 				stds.clear();
-				#curses.resizeterm(h,w);
 				stds.refresh();
 
 				layout.wsbox.resize(1,w-4);
 				layout.wrbox.resize(h-3,w-4);
 				layout.webox.resize(h-3,w-4);
 				layout.wtbox.resize(h-3,w-4);
+
+				layout.ebox.resize();
 				
 				layout.set();
 

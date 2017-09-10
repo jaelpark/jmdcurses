@@ -197,6 +197,15 @@ class EntryScreen(UIComponentBase):
 		self.suba = self.win.derwin(h-1,int(0.5*w)-2,0,0);
 		self.subb = self.win.derwin(h-1,int(0.5*w)+1,0,int(0.5*w)-1);
 	
+	def resize(self):
+		(h,w) = self.win.getmaxyx();
+		#self.suba.mvderwin(0,0);
+		#self.suba.resize(h-1,int(0.5*w)-2);
+		#self.subb.mvderwin(0,int(0.5*w)-1);
+		#self.subb.resize(h-1,int(0.5*w)+1);
+		self.suba = self.win.derwin(h-1,int(0.5*w)-2,0,0);
+		self.subb = self.win.derwin(h-1,int(0.5*w)+1,0,int(0.5*w)-1);
+	
 	def set(self, entries, sel = 0):
 		self.entries = entries; #should be prerandomized for flashcards
 		self.sel = sel;
