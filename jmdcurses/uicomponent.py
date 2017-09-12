@@ -276,7 +276,7 @@ class EntryScreen(UIComponentBase):
 					if xref is not None:
 						for x,xr in enumerate(loopOn(xref)):
 							if x > 0:
-								self.suba.addstr(", ");
+								self.suba.addstr(", ",curses.color_pair(8));
 							self.suba.addstr(xr,curses.color_pair(8));
 						self.suba.addstr(" ");
 					else: self.suba.addstr("● ");
