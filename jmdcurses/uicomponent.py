@@ -351,6 +351,7 @@ class TagBrowser(UIComponentBase):
 	
 	def set(self, sel = None):
 		self.taglist = list(self.jisho.tagdict);
+		self.taglist.sort();
 		if sel is not None:
 			self.sel = sel;
 	
