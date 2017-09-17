@@ -1,6 +1,7 @@
 
 import curses
 import romkan				#kana/romaji conversion
+import re					#trim leftover characters from incomplete input conversion
 
 def loopOn(input):
 	if isinstance(input,list):
@@ -62,6 +63,7 @@ class SearchResults(UIComponentBase):
 		self.results = [];
 		self.query = "";
 		self.sel = None;
+		self.kr = re.compile("[a-zA-Z]");
 	
 	def clear(self):
 		super(SearchResults,self).clear();
@@ -135,7 +137,9 @@ class SearchResults(UIComponentBase):
 					tagged = True;
 
 			hiragana = romkan.to_hiragana(self.query);
+			hiragana = self.kr.sub("",hiragana);
 			katakana = romkan.to_katakana(self.query);
+			katakana = self.kr.sub("",katakana);
 			qs = [(self.query,len(self.query)),(hiragana,len(hiragana)),(katakana,len(katakana))];
 
 			for s in [fln,gln]:
@@ -149,6 +153,8 @@ class SearchResults(UIComponentBase):
 						Q = -1;
 						l = +0;
 						for qe in qs:
+							if qe[1] == 0:
+								continue;
 							Q1 = s.find(qe[0],q);
 							l1 = qe[1];
 							if Q1 != -1 and (Q1 < Q or Q == -1):
@@ -160,7 +166,7 @@ class SearchResults(UIComponentBase):
 						self.win.addstr(s[Q:Q+l],curses.color_pair(c[1]));
 						q = Q+l;
 					self.win.addstr(s[q:],curses.color_pair(c[0]));
-					#self.win.addstr(s,curses.color_pair(c));
+					#self.win.addstr(s,curses.color_pair(c[0]));
 					(_,x) = self.win.getyx();
 					self.win.addstr(' '*(w-x),curses.color_pair(c[0]));
 
