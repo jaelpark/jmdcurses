@@ -6,6 +6,7 @@ from curses.textpad import rectangle
 import locale
 from optparse import OptionParser
 import difflib				#dictionary lookup
+import fnmatch				#wildcard searches
 from random import shuffle	#randomized flashcards
 
 import jmdcurses
@@ -112,21 +113,32 @@ def main(stds, jisho):
 					focus = stds;
 				elif layout.sbox.input(c):
 					query = layout.sbox.gather();
-					m = difflib.get_close_matches(query,
-						[x for x in jisho.rindex \
-							if query in x and (len(query) > 1 or len(x) < 3) \
-							and (len(query) > 3 or len(x) < 6)],12);
 
 					results = [];
 					dup = set();
-					for i in m:
-						for j in jisho.rindex[i]:
-							if j in dup:
-								continue;
-							dup.add(j);
 
-							results.append(jisho.jmdict[j]);
-					
+					if '*' in query or '?' in query:
+						m = fnmatch.filter(jisho.jindex,query);
+						for i in m:
+							for j in jisho.jindex[i]:
+								if j in dup:
+									continue;
+								dup.add(j);
+
+								results.append(jisho.jmdict[j]);
+					else:
+						m = difflib.get_close_matches(query,
+							[x for x in jisho.rindex \
+								if query in x and (len(query) > 1 or len(x) < 3) \
+								and (len(query) > 3 or len(x) < 6)],12);
+						for i in m:
+							for j in jisho.rindex[i]:
+								if j in dup:
+									continue;
+								dup.add(j);
+
+								results.append(jisho.jmdict[j]);
+
 					layout.rbox.clear();
 					layout.rbox.set(results,query,0);
 					layout.rbox.render();

@@ -20,13 +20,14 @@ class Dictionary:
 		try:
 			with open(dictfile,"rb") as f:
 				print("Loading dictionary...");
-				(self.jmdict,self.rindex,self.kjdict,self.kindex) = pickle.load(f);
+				(self.jmdict,self.rindex,self.jindex,self.kjdict,self.kindex) = pickle.load(f);
 		except (OSError,IOError):
 			print("Parsing JMdict...");
 			self.jmdict = xmld.parse(GzipFile(self.jmfile));
 			self.jmdict = self.jmdict["JMdict"]["entry"];
 			print("Indexing...");
 			self.rindex = {};
+			self.jindex = {};
 			for i,entry in enumerate(self.jmdict):
 				try:
 					kele = entry["k_ele"];
@@ -35,7 +36,10 @@ class Dictionary:
 						a = self.rindex.get(r);
 						if a is None:
 							self.rindex[r] = [i];
-						else: a.append(i);
+							self.jindex[r] = [i];
+						else:
+							a.append(i);
+							self.jindex[r].append(i);
 				except KeyError:
 					pass;
 
@@ -96,7 +100,7 @@ class Dictionary:
 			
 			with open(dictfile,"wb") as f:
 				print("Caching...");
-				pickle.dump((self.jmdict,self.rindex,self.kjdict,self.kindex),f);
+				pickle.dump((self.jmdict,self.rindex,self.jindex,self.kjdict,self.kindex),f);
 	
 	def LoadTags(self, tagfile, tagdef):
 		self.tagfile = tagfile;
