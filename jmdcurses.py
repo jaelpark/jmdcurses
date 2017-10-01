@@ -20,10 +20,10 @@ class Layout:
 
 		(h,w) = self.stds.getmaxyx();
 
-		self.wsbox = curses.newwin(1,w-4,2,2); #nlines, ncols, beginy, beginx
-		self.wrbox = curses.newwin(h-3,w-4,5,2);
-		self.webox = curses.newwin(h-3,w-4,2,2);
-		self.wtbox = curses.newwin(h-3,w-4,2,2);
+		self.wsbox = curses.newwin(1,w-4,1,2); #nlines, ncols, beginy, beginx
+		self.wrbox = curses.newwin(h-3,w-4,4,2);
+		self.webox = curses.newwin(h-3,w-4,1,2);
+		self.wtbox = curses.newwin(h-3,w-4,1,2);
 
 		self.sbox = jmdcurses.uicomponent.SearchBox(self.wsbox);
 		self.rbox = jmdcurses.uicomponent.SearchResults(self.wrbox,jisho);
@@ -36,25 +36,26 @@ class Layout:
 	def RenderBorder(self, win, stds):
 		(y,x) = win.getbegyx();
 		(h,w) = win.getmaxyx();
-		rectangle(stds,y-1,x-1,h+2,w+2);
+		rectangle(stds,y-1,x-1,h+1,w+2);
 
 	def set(self, layout = None):
 		if layout != None:
 			self.layout = layout;
 		if self.layout == self.QUERY:
+			self.stds.clear();
 			self.RenderBorder(self.wsbox,self.stds);
 			self.stds.refresh();
 
 			self.rbox.render();
 
 		elif self.layout == self.ENTRY:
-			self.RenderBorder(self.webox,self.stds);
+			self.stds.clear();
 			self.stds.refresh();
 
 			self.ebox.render(self.flashmode);
 
 		elif self.layout == self.TAGBR:
-			self.RenderBorder(self.wtbox,self.stds);
+			self.stds.clear();
 			self.stds.refresh();
 
 			self.tbox.render();
