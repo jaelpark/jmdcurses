@@ -174,9 +174,17 @@ def main(stds, jisho):
 					layout.ebox.render(layout.flashmode);
 
 				elif c == ord('T'):
-					entry = layout.rbox.gather();
+					entry = layout.ebox.gather();
 					if entry is not None:
 						jisho.tagdict[jisho.tagdef].append(entry["ent_seq"]);
+
+				elif c == ord('X'):
+					entry = layout.ebox.gather();
+					if entry is not None:
+						for te in jisho.tagdict:
+							if entry["ent_seq"] in jisho.tagdict[te]:
+								jisho.tagdict[te].remove(entry["ent_seq"]);
+					layout.ebox.render(layout.flashmode);
 
 				else:
 					layout.ebox.input(c);
@@ -263,6 +271,14 @@ def main(stds, jisho):
 					entry = layout.rbox.gather();
 					if entry is not None:
 						jisho.tagdict[jisho.tagdef].append(entry["ent_seq"]);
+					layout.rbox.render();
+
+				elif c == ord('X'):
+					entry = layout.rbox.gather();
+					if entry is not None:
+						for te in jisho.tagdict:
+							if entry["ent_seq"] in jisho.tagdict[te]:
+								jisho.tagdict[te].remove(entry["ent_seq"]);
 					layout.rbox.render();
 
 				elif c == ord('i'):
