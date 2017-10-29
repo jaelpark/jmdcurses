@@ -147,27 +147,6 @@ def main(stds, jisho):
 			elif c == ord('q'):
 				break;
 
-			elif c in (ord('t'),ord(' ')):
-				entry = layout.rbox.gather();
-				if entry is not None:
-					try:
-						td = jisho.tagdict[layout.tbox.tagsel];
-						try:
-							td.remove(entry["ent_seq"]);
-						except ValueError:
-							td.append(entry["ent_seq"]);
-					except KeyError:
-						jisho.tagdict[layout.tbox.tagsel] = [entry["ent_seq"]];
-				if focus is stds:
-					layout.rbox.render();
-			
-			elif c == ord('T'):
-				entry = layout.rbox.gather();
-				if entry is not None:
-					jisho.tagdict[jisho.tagdef].append(entry["ent_seq"]);
-				if focus is stds:
-					layout.rbox.render();
-
 			elif focus is layout.ebox.win:
 				if c in (ord('h'),curses.KEY_LEFT,27):
 					stds.erase();
@@ -180,6 +159,24 @@ def main(stds, jisho):
 
 				elif c in (ord('l'),curses.KEY_RIGHT):
 					layout.ebox.render(False);
+
+				elif c in (ord('t'),ord(' ')):
+					entry = layout.ebox.gather();
+					if entry is not None:
+						try:
+							td = jisho.tagdict[layout.tbox.tagsel];
+							try:
+								td.remove(entry["ent_seq"]);
+							except ValueError:
+								td.append(entry["ent_seq"]);
+						except KeyError:
+							jisho.tagdict[layout.tbox.tagsel] = [entry["ent_seq"]];
+					layout.ebox.render(layout.flashmode);
+
+				elif c == ord('T'):
+					entry = layout.rbox.gather();
+					if entry is not None:
+						jisho.tagdict[jisho.tagdef].append(entry["ent_seq"]);
 
 				else:
 					layout.ebox.input(c);
@@ -248,6 +245,25 @@ def main(stds, jisho):
 						layout.ebox.set(flashcards,0);
 						layout.set(layout.ENTRY);
 						#layout.ebox.render(layout.flashmode);
+			
+				elif c in (ord('t'),ord(' ')):
+					entry = layout.rbox.gather();
+					if entry is not None:
+						try:
+							td = jisho.tagdict[layout.tbox.tagsel];
+							try:
+								td.remove(entry["ent_seq"]);
+							except ValueError:
+								td.append(entry["ent_seq"]);
+						except KeyError:
+							jisho.tagdict[layout.tbox.tagsel] = [entry["ent_seq"]];
+					layout.rbox.render();
+
+				elif c == ord('T'):
+					entry = layout.rbox.gather();
+					if entry is not None:
+						jisho.tagdict[jisho.tagdef].append(entry["ent_seq"]);
+					layout.rbox.render();
 
 				elif c == ord('i'):
 					layout.sbox.clear();

@@ -355,6 +355,9 @@ class EntryScreen(UIComponentBase):
 				self.sel -= 1;
 			else:
 				self.sel = len(self.entries)-1;
+	
+	def gather(self):
+		return self.entries[self.sel] if self.sel is not None else None;
 
 class TagBrowser(UIComponentBase):
 	def __init__(self, win, jisho):
