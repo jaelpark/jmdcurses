@@ -292,6 +292,15 @@ class EntryScreen(UIComponentBase):
 						self.suba.addstr(g["#text"]);
 					self.suba.addstr("\n");
 
+				tagged = False;
+				self.suba.addstr("\nTags:\n");
+				for te in self.jisho.tagdict:
+					if entry["ent_seq"] in self.jisho.tagdict[te]:
+						self.suba.addstr("["+u"\u2764 "+te+"] ");
+						tagged = True;
+				if tagged:
+					self.suba.addstr("\n");
+
 				self.suba.addstr("\nSequence:\n"+str(entry["ent_seq"]));
 
 		except curses.error:
